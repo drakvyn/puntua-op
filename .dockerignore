@@ -1,0 +1,43 @@
+# .dockerignore — keep the build context lean
+
+# Dependencies (reinstalled inside the container)
+node_modules
+.pnp
+.pnp.js
+
+# Next.js build output
+.next
+out
+
+# Git
+.git
+.gitignore
+
+# Env files (injected at runtime via docker-compose)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+
+# Test & coverage
+coverage
+__tests__
+*.test.ts
+*.spec.ts
+jest.config.*
+
+# Docker files themselves (not needed inside image)
+docker-compose*.yml
+Dockerfile*
+Makefile

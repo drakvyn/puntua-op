@@ -1,0 +1,33 @@
+# ── Dev Dockerfile ──────────────────────────────────────────────────────────
+# Hot-reload, Prisma Studio, no build step needed.
+# Source is mounted via docker-compose volume.
+
+FROM node:22-alpine
+
+# Install system deps needed by Prisma & native modules
+RUN apk add --no-cache \
+    libc6-compat \
+    openssl \
+    ca-certificates
+
+WORKDIR /app
+
+# Install dependencies first (layer cache)
+COPY package.json package-lock.json* pnpm-lock.yaml* yarn.lock* ./
+RUN \
+  if [ -f yarn.lock ]; then yarn install --frozen-lockfile; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable && pnpm install --frozen-lockfile; \
+  else npm ci; \
+  fi
+
+# Copy prisma schema so the client can be generated
+COPY prisma ./prisma
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Expose Next.js dev server & Prisma Studio
+EXPOSE 3000 5555
+
+# Entry: run migrations then start dev server
+CMD ["sh", "-c", "npx prisma migrate deploy && npm run dev"]

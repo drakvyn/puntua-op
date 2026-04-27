@@ -1,0 +1,55 @@
+name: puntuaOP-dev
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: puntuaOP_postgres_dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-puntuaOP}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-devpassword}
+      POSTGRES_DB: ${POSTGRES_DB:-puntuaOP_dev}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-puntuaOP} -d ${POSTGRES_DB:-puntuaOP_dev}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - puntuaOP_net
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    container_name: puntuaOP_app_dev
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      AUTH_TRUST_HOST: "true"
+      DATABASE_URL: postgresql://${POSTGRES_USER:-puntuaOP}:${POSTGRES_PASSWORD:-devpassword}@postgres:5432/${POSTGRES_DB:-puntuaOP_dev}?schema=public
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-dev-secret-change-in-prod}
+      NEXT_TELEMETRY_DISABLED: "1"
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - puntuaOP_net
+
+volumes:
+  postgres_dev_data:
+
+networks:
+  puntuaOP_net:
+    driver: bridge
