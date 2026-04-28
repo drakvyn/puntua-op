@@ -2,7 +2,7 @@
 
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
-import { registerAction } from "@/src/actions/auth/auth.actions";
+import { registerAction } from "@/actions/auth/auth.actions";
 import { Input } from "../shared/ui/Input";
 import { Button } from "../shared/ui/Button";
 

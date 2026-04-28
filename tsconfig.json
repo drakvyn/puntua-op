@@ -13,15 +13,15 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "plugins": [{ "name": "next" }],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
-      "@/*":          ["./*"],
-      "@/actions/*":  ["./src/actions/*"],
-      "@/features/*": ["./src/features/*"],
-      "@/schemas/*":  ["./src/global/schemas/*"],
-      "@/types/*":    ["./src/global/types/*"],
-      "@/lib/*":      ["./lib/*"],
-      "@/ui/*":       ["./src/features/ui/*"]
+      "@/*": ["./src/*"],
+      "@/generated/*": ["./generated/*"],
+      "@/lib/*": ["./lib/*"]
     }
   },
   "include": [

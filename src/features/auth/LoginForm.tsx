@@ -3,9 +3,10 @@
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { loginAction } from "@/src/actions/auth/auth.actions";
+
 import { Input } from "../shared/ui/Input";
 import { Button } from "../shared/ui/Button";
+import { loginAction } from "@/actions/auth/auth.actions";
 
 export function LoginForm() {
   const router = useRouter();
