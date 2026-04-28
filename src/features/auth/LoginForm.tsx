@@ -2,6 +2,7 @@
 
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { loginAction } from "@/src/actions/auth/auth.actions";
 import { Input } from "../shared/ui/Input";
 import { Button } from "../shared/ui/Button";
@@ -23,7 +24,18 @@ export function LoginForm() {
         setError(result.error);
         return;
       }
-      router.push("/user/me");
+
+      const res = await signIn("credentials", {
+        email: formData.get("email"),
+        password: formData.get("password"),
+        redirect: false,
+      });
+
+      if (res?.error) {
+        setError("Email o contraseña incorrectos");
+      } else {
+        router.push("/user/me");
+      }
     });
   }
 

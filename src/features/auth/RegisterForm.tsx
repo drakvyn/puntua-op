@@ -23,7 +23,7 @@ export function RegisterForm() {
         setError(result.error);
         return;
       }
-      router.push("/auth/login");
+      router.push("/login");
     });
   }
 

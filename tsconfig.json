@@ -20,7 +20,7 @@
       "@/features/*": ["./src/features/*"],
       "@/schemas/*":  ["./src/global/schemas/*"],
       "@/types/*":    ["./src/global/types/*"],
-      "@/lib/*":      ["./src/lib/*"],
+      "@/lib/*":      ["./lib/*"],
       "@/ui/*":       ["./src/features/ui/*"]
     }
   },
