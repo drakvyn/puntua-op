@@ -51,3 +51,12 @@ shell-db:
 reset-dev:
 	docker compose -f docker-compose.dev.yml down -v
 	docker compose -f docker-compose.dev.yml --env-file .env.dev up --build -d
+
+nuke:
+	docker system prune -a --volumes -f
+
+nuke-dev: nuke
+	docker compose -f docker-compose.dev.yml --env-file .env.dev up --build
+
+pause-all:
+	docker stop $(shell docker ps -q)
